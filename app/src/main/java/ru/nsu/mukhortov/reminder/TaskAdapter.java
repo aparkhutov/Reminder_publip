@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     private ArrayList<String> mDataset;
+    static final String TASK_NAME = "task_name";
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextView;
@@ -30,8 +31,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     Toast.makeText(v.getContext(), mTextView.getText(),
                             Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(v.getContext(), TaskActivity.class);
-
+                    intent.putExtra(TASK_NAME, mTextView.getText());
                     v.getContext().startActivity(intent);
+
                 }
             });
         }
