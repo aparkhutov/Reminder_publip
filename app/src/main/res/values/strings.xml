@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Reminder</string>
+    <string-array name="types">
+        <item>Recurrent</item>
+        <item>Non-Recurrent</item>
+        <item>Perspective</item>
+    </string-array>
 </resources>
