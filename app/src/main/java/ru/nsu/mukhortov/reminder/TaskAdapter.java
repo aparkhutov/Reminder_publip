@@ -1,5 +1,6 @@
 package ru.nsu.mukhortov.reminder;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +29,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 public void onClick(View v) {
                     Toast.makeText(v.getContext(), mTextView.getText(),
                             Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(v.getContext(), TaskActivity.class);
+
+                    v.getContext().startActivity(intent);
                 }
             });
         }
