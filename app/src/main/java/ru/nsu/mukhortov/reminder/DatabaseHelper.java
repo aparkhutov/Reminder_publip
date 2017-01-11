@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.HashMap;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
-
+/*database*/
     static final String dbName="rapidminerDB";
 
     static final String tasksTable="tasks";
