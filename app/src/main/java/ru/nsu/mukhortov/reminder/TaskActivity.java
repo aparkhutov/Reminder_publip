@@ -1,7 +1,9 @@
 package ru.nsu.mukhortov.reminder;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -24,12 +26,14 @@ public class TaskActivity extends AppCompatActivity {
     static final String TASK_NAME = "task_name";
     Toolbar toolbar;
     int color;
-
+    String taskName;
     MenuItem save;
+    MenuItem delete;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_task, menu);
         save = menu.findItem(R.id.ok);
+        delete = menu.findItem(R.id.delete);
         return true;
     }
 
@@ -46,11 +50,28 @@ public class TaskActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.ok:
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow((findViewById(R.id.card_view)).getWindowToken(), 0);
-                    toolbar.setBackgroundColor(color);
-                    save.setVisible(false);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow((findViewById(R.id.card_view)).getWindowToken(), 0);
+                toolbar.setBackgroundColor(color);
+                save.setVisible(false);
+                delete.setVisible(true);
+                toolbar.setTitle(taskName);
+                return true;
+            case R.id.delete:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Delete?").setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
+                    }
+                }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -66,7 +87,7 @@ public class TaskActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         Bundle data = getIntent().getExtras();
-        String taskName = data.getString(TASK_NAME);
+        taskName = data.getString(TASK_NAME);
         toolbar.setTitle(taskName);
         color =  ((ColorDrawable)toolbar.getBackground()).getColor();
         TextView nameTextView = (TextView)findViewById(R.id.taskname);
@@ -83,6 +104,7 @@ public class TaskActivity extends AppCompatActivity {
                 toolbar.setTitle("Editing");
                 toolbar.setBackgroundColor(Color.GRAY);
                 save.setVisible(true);
+                delete.setVisible(false);
                 tv.setFocusable(true);
                 tv.setFocusableInTouchMode(true);
 

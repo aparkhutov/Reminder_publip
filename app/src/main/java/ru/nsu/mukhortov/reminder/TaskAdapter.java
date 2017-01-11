@@ -36,6 +36,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
                 }
             });
+            v.setOnLongClickListener(new View.OnLongClickListener() {
+
+                @Override
+                public boolean onLongClick(View v) {
+                    return false;
+                }
+            });
+
         }
 
 
@@ -47,7 +55,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     @Override
     public TaskAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                         int viewType) {
+                                                     int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_item, parent, false);
 
