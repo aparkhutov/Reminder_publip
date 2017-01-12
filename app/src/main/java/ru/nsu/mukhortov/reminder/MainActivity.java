@@ -1,12 +1,10 @@
 package ru.nsu.mukhortov.reminder;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-import ru.nsu.mukhortov.TasksAdapter;
 import ru.nsu.mukhortov.reminder.model.Task;
 
 import java.util.Arrays;
@@ -26,11 +24,8 @@ public class MainActivity extends AppCompatActivity {
             Task task1 = new Task("Батя", "В здании1");
             Task task2 = new Task("Батя", "В здании2");
             Task task3 = new Task("Батя", "В здании3");
-            task.save();
-            task1.save();
-            task2.save();
-            task3.save();
             tasks = Arrays.asList(task, task1, task2, task3);
+            Task.saveInTx(task);
         }
         tasksAdapter = new TasksAdapter(this, R.layout.task_item, tasks);
         listView.setAdapter(tasksAdapter);

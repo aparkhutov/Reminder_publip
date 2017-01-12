@@ -1,4 +1,4 @@
-package ru.nsu.mukhortov;
+package ru.nsu.mukhortov.reminder;
 
 import android.content.Context;
 import android.view.LayoutInflater;
