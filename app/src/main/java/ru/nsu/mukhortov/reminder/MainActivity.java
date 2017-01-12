@@ -25,9 +25,14 @@ public class MainActivity extends AppCompatActivity {
             Task task2 = new Task("Батя", "В здании2");
             Task task3 = new Task("Батя", "В здании3");
             tasks = Arrays.asList(task, task1, task2, task3);
-            Task.saveInTx(task);
+            Task.saveInTx(tasks);
         }
         tasksAdapter = new TasksAdapter(this, R.layout.task_item, tasks);
         listView.setAdapter(tasksAdapter);
+        tasks = Task.listAll(Task.class);
+        for (Task t :
+                tasks) {
+            System.out.println(t.toString());
+        }
     }
 }

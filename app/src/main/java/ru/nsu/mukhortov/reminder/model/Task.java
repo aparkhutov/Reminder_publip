@@ -17,6 +17,9 @@ public class Task extends SugarRecord {
     private Date deadline;
     private List<Remind> reminds;
 
+    public Task() {
+    }
+
     public Task(String title, String description) {
         this.title = title;
         this.description = description;

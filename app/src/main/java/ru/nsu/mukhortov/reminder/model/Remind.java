@@ -8,4 +8,6 @@ import lombok.Data;
  */
 @Data
 public class Remind extends SugarRecord {
+    public Remind() {
+    }
 }
