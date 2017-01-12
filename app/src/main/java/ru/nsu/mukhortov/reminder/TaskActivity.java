@@ -110,6 +110,7 @@ public class TaskActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         tv = (EditText)findViewById(R.id.taskdescription);
+        tv.setText(taskName + "'s description");
         tv.setFocusable(false);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

@@ -1,6 +1,7 @@
 package ru.nsu.mukhortov.reminder;
 
 public class Task {
+    private int id;
     private String name;
     private String description;
     private String status;
@@ -9,12 +10,17 @@ public class Task {
     private String notice_time;
 
     public Task(String name, String description, String status, String finish_day, String finish_time, String notice_time){
+        //this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
         this.finish_day = finish_day;
         this.finish_time = finish_time;
         this.notice_time = notice_time;
+    }
+
+    public int getId(){
+        return id;
     }
 
     public String getName(){
