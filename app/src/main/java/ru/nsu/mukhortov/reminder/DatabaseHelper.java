@@ -211,13 +211,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             description = cursorT.getString(cursorT.getColumnIndex(colDescription));
             status = cursorT.getString(cursorT.getColumnIndex(colStatus));
 
-            System.out.println(currentID);
-            System.out.println(name);
-            System.out.println(description);
-            System.out.println(status);
-
             cursorNR = db.rawQuery("SELECT * FROM " + nonRecurrentTable + " WHERE task_id = " + currentID, new String[]{});
-            cursorNR = db.rawQuery("SELECT * FROM " + nonRecurrentTable , new String[]{});
+            //cursorNR = db.rawQuery("SELECT * FROM " + nonRecurrentTable , new String[]{});
 
             cursorNR.moveToFirst();
             noticeID = cursorNR.getString(cursorNR.getColumnIndex(colNoticeID));

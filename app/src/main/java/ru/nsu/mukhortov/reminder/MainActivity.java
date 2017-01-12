@@ -13,8 +13,13 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     TasksFragment completed;
     private static DatabaseHelper databaseHelper;
     private static SQLiteDatabase database;
+
+    ViewPagerAdapter adapter;
 
     static final String TASK_NAME = "task_name";
 
@@ -38,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         ArrayList<String> task = data.getStringArrayListExtra("task");
 
-        databaseHelper.addTask(task.get(0), task.get(1),
-                "null", "null", "null", "null");
+        //databaseHelper.addTask(task.get(0), task.get(1),
+        //        "null", "null", "null", "null");
 
     }
 
@@ -49,6 +56,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        databaseHelper = new DatabaseHelper(this);
+        /*databaseHelper.addTask("Task 1", "simple test", "active", "2016-12-12", "12:10:00", "12:00:00");
+        databaseHelper.addTask("Task 2", "simple test", "active", "2016-12-12", "12:10:00", "12:00:00");
+        databaseHelper.addTask("Task 3", "simple test", "active", "2016-12-12", "12:10:00", "12:00:00");
+        databaseHelper.addTask("Task 4", "simple test", "active", "2016-12-12", "12:10:00", "12:00:00");*/
+
+
+        String string = "2022-02-13";
+        DateFormat format = new SimpleDateFormat("yyyy-m-dd", Locale.ENGLISH);
+        Date date = null;
+        try {
+            date = format.parse(string);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println("DATE: " + date); // Sat Jan 02 00:00:00 GMT 2010
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabmain);
@@ -65,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager)findViewById(R.id.viewpager);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
 
         active = new TasksFragment();
@@ -75,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         HashMap<Integer, Task> tasks = new HashMap<>();
         databaseHelper = new DatabaseHelper(getApplicationContext());
 
-        database = databaseHelper.getReadableDatabase();
+        database = databaseHelper.getWritableDatabase();
         active.setDatabase(database);
         active.setDatabaseHelper(databaseHelper);
 

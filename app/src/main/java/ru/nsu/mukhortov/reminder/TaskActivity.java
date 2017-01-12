@@ -31,6 +31,7 @@ public class TaskActivity extends AppCompatActivity {
     MenuItem save;
     MenuItem delete;
     EditText tv;
+    DatabaseHelper database;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_task, menu);
@@ -55,6 +56,8 @@ public class TaskActivity extends AppCompatActivity {
                 String description = tv.getText().toString();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow((findViewById(R.id.card_view)).getWindowToken(), 0);
+                //database.addTask("FromTaskActivity", "description", "active", "null", "null", "null");
+                database.addTask("Task 1", "simple test", "active", "2016-12-12", "12:10:00", "12:00:00");
                 toolbar.setBackgroundColor(color);
                 save.setVisible(false);
                 delete.setVisible(true);
@@ -95,6 +98,8 @@ public class TaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        database = new DatabaseHelper(this);
 
         Bundle data = getIntent().getExtras();
         taskName = data.getString(TASK_NAME);
