@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> task = data.getStringArrayListExtra("task");
 
         databaseHelper.addTask(task.get(0), task.get(1),
-                "null", "null", "null", "null");
+                "null", null, null, null);
         databaseHelper = new DatabaseHelper(getApplicationContext());
 
         database = databaseHelper.getWritableDatabase();
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         databaseHelper.addTask("Task 4", "simple test 4", "active", "2016-12-12", "12:10:00", "12:00:00");*/
 
 
-        String string = "2022-02-13";
+        /*String string = "2022-02-13";
         DateFormat format = new SimpleDateFormat("yyyy-m-dd", Locale.ENGLISH);
         Date date = null;
         try {
@@ -83,14 +83,17 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         System.out.println("DATE: " + date); // Sat Jan 02 00:00:00 GMT 2010
-
+*/
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabmain);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), TaskActivity.class);
-                intent.putExtra(TASK_NAME, "new task");
+                ArrayList<String>task = new ArrayList<String>();
+                task.add("new task");
+                task.add("details");
+                intent.putExtra(TASK_NAME, task);
                 startActivityForResult(intent, 1);
 
 

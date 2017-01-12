@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import ru.nsu.mukhortov.reminder.R;
@@ -17,9 +18,9 @@ import ru.nsu.mukhortov.reminder.database.Task;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
-    private HashMap<Integer,Task> tasks;
+    private static HashMap<Integer,Task> tasks;
     static final String TASK_NAME = "task_name";
-
+    static Task task;
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextView;
 
@@ -32,7 +33,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     Toast.makeText(v.getContext(), mTextView.getText(),
                             Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(v.getContext(), TaskActivity.class);
-                    intent.putExtra(TASK_NAME, mTextView.getText());
+
+                    ArrayList<String>taskInfo = new ArrayList<String>();
+                    taskInfo.add(task.getName());
+                    taskInfo.add(task.getDescription());
+                    intent.putExtra(TASK_NAME, taskInfo);
                     v.getContext().startActivity(intent);
 
                 }
@@ -67,7 +72,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
     //    DatabaseHelper databaseHelper = new
-        Task task = tasks.get(position);
+        task = tasks.get(position);
         holder.mTextView.setText(task.getName());
 
 

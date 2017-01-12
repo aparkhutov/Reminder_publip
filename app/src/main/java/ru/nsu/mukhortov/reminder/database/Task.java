@@ -1,16 +1,19 @@
 package ru.nsu.mukhortov.reminder.database;
 
+import java.sql.Time;
+import java.util.Date;
+
 public class Task {
     private int id;
     private String name;
     private String description;
     private String status;
-    private String finish_day;
-    private String finish_time;
-    private String notice_time;
+    private Date finish_day;
+    private Time finish_time;
+    private Time notice_time;
 
-    public Task(String name, String description, String status, String finish_day, String finish_time, String notice_time){
-        //this.id = id;
+    public Task(int id, String name, String description, String status, Date finish_day, Time finish_time, Time notice_time){
+        this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
@@ -35,15 +38,15 @@ public class Task {
         return status;
     }
 
-    public String getFinishDay(){
+    public Date getFinishDay(){
         return finish_day;
     }
 
-    public String getFinishTime(){
+    public Time getFinishTime(){
         return finish_time;
     }
 
-    public String getNoticeTime(){
+    public Time getNoticeTime(){
         return notice_time;
     }
 }
