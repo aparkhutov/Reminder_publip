@@ -1,6 +1,7 @@
 package ru.nsu.mukhortov.reminder;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -10,12 +11,21 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    TasksFragment active;
+    TasksFragment completed;
+    private static DatabaseHelper databaseHelper;
+    private static SQLiteDatabase database;
+
     static final String TASK_NAME = "task_name";
 
     @Override
@@ -25,10 +35,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        ArrayList<String> task = data.getStringArrayListExtra("task");
+
+        databaseHelper.addTask(task.get(0), task.get(1),
+                "null", "null", "null", "null");
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -39,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), TaskActivity.class);
                 intent.putExtra(TASK_NAME, "new task");
-                view.getContext().startActivity(intent);
+                startActivityForResult(intent, 1);
+
             }
         });
 
@@ -47,8 +66,24 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager = (ViewPager)findViewById(R.id.viewpager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new TasksFragment(), "Active");
-        adapter.addFragment(new TasksFragment(), "Completed");
+
+
+        active = new TasksFragment();
+        completed = new TasksFragment();
+
+
+        HashMap<Integer, Task> tasks = new HashMap<>();
+        databaseHelper = new DatabaseHelper(getApplicationContext());
+
+        database = databaseHelper.getReadableDatabase();
+        active.setDatabase(database);
+        active.setDatabaseHelper(databaseHelper);
+
+      //  completed.setDatabase(database);
+      //  completed.setDatabaseHelper(databaseHelper);
+        adapter.addFragment(active, "Active");
+        adapter.addFragment(completed, "Completed");
+
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

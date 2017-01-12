@@ -1,5 +1,6 @@
 package ru.nsu.mukhortov.reminder;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,19 +11,42 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SimpleCursorAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by ivan on 09.01.17.
  */
 public class TasksFragment extends Fragment {
 
+    public static DatabaseHelper getDatabaseHelper() {
+        return databaseHelper;
+    }
+
+    public static void setDatabaseHelper(DatabaseHelper databaseHelper) {
+        TasksFragment.databaseHelper = databaseHelper;
+    }
+
+    public static SQLiteDatabase getDatabase() {
+        return database;
+    }
+
+    public static void setDatabase(SQLiteDatabase database) {
+        TasksFragment.database = database;
+    }
+
+    private static DatabaseHelper databaseHelper;
+    private static SQLiteDatabase database;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    static HashMap<Integer, Task> tasks;
     static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
+
+
     int pageNumber;
 
     static TasksFragment newInstance(int page){
@@ -36,7 +60,8 @@ public class TasksFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pageNumber = getArguments().getInt(ARGUMENT_PAGE_NUMBER);
+        tasks = databaseHelper.getTasks();
+
     }
 
     @Override
@@ -49,17 +74,9 @@ public class TasksFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ArrayList<String> myDataset = new ArrayList<>();
-        myDataset.add("page =" + String.valueOf(pageNumber));
-        myDataset.add("page =" + String.valueOf(pageNumber));
-        myDataset.add("page =" + String.valueOf(pageNumber));
-        myDataset.add("page =" + String.valueOf(pageNumber));
-        myDataset.add("page =" + String.valueOf(pageNumber));
-        myDataset.add("page =" + String.valueOf(pageNumber));
-        myDataset.add("page =" + String.valueOf(pageNumber));
-        myDataset.add("page =" + String.valueOf(pageNumber));
+        registerForContextMenu(mRecyclerView);
 
-        mAdapter = new TaskAdapter(myDataset);
+        mAdapter = new TaskAdapter(tasks);
         mRecyclerView.setAdapter(mAdapter);
         return view;
     }

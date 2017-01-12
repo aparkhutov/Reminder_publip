@@ -2,7 +2,6 @@ package ru.nsu.mukhortov.reminder;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +9,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-
-
+import java.util.HashMap;
 
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
-    private ArrayList<String> mDataset;
+    private HashMap<Integer,Task> tasks;
     static final String TASK_NAME = "task_name";
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -49,8 +47,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     }
 
-    public TaskAdapter(ArrayList<String> dataset) {
-        mDataset = dataset;
+    public TaskAdapter(HashMap<Integer,Task> tasks) {
+        this.tasks = tasks;
     }
 
     @Override
@@ -65,8 +63,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
-        holder.mTextView.setText(mDataset.get(position));
+    //    DatabaseHelper databaseHelper = new
+        Task task = tasks.get(position);
+        holder.mTextView.setText(task.getName());
 
     }
 
@@ -77,7 +76,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return tasks.size();
     }
 
 

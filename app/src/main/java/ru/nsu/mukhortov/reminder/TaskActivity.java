@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
 
 public class TaskActivity extends AppCompatActivity {
     static final String TASK_NAME = "task_name";
@@ -29,6 +30,7 @@ public class TaskActivity extends AppCompatActivity {
     String taskName;
     MenuItem save;
     MenuItem delete;
+    EditText tv;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_task, menu);
@@ -50,12 +52,20 @@ public class TaskActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.ok:
+                String description = tv.getText().toString();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow((findViewById(R.id.card_view)).getWindowToken(), 0);
                 toolbar.setBackgroundColor(color);
                 save.setVisible(false);
                 delete.setVisible(true);
                 toolbar.setTitle(taskName);
+                Intent intent = new Intent();
+                ArrayList<String> taskInfo = new ArrayList<>();
+                taskInfo.add(taskName);
+                taskInfo.add(description);
+                intent.putExtra("task", taskInfo);
+                setResult(RESULT_OK, intent);
+                finish();
                 return true;
             case R.id.delete:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -94,7 +104,7 @@ public class TaskActivity extends AppCompatActivity {
         nameTextView.setText(taskName);
         setSupportActionBar(toolbar);
 
-        final EditText tv = (EditText)findViewById(R.id.taskdescription);
+        tv = (EditText)findViewById(R.id.taskdescription);
         tv.setFocusable(false);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
