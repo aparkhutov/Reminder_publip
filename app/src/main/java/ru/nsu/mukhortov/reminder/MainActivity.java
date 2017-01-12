@@ -3,7 +3,6 @@ package ru.nsu.mukhortov.reminder;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,6 +18,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
+import ru.nsu.mukhortov.reminder.database.DatabaseHelper;
+import ru.nsu.mukhortov.reminder.database.Task;
+import ru.nsu.mukhortov.reminder.fragments.TasksFragment;
 
 public class MainActivity extends AppCompatActivity {
 

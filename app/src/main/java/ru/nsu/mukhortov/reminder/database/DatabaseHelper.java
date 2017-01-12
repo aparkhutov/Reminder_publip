@@ -1,4 +1,4 @@
-package ru.nsu.mukhortov.reminder;
+package ru.nsu.mukhortov.reminder.database;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.HashMap;
+
+import ru.nsu.mukhortov.reminder.database.Task;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
 /*database*/

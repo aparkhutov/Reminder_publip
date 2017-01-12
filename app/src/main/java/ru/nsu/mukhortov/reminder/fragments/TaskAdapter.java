@@ -1,4 +1,4 @@
-package ru.nsu.mukhortov.reminder;
+package ru.nsu.mukhortov.reminder.fragments;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+
+import ru.nsu.mukhortov.reminder.R;
+import ru.nsu.mukhortov.reminder.TaskActivity;
+import ru.nsu.mukhortov.reminder.database.Task;
 
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {

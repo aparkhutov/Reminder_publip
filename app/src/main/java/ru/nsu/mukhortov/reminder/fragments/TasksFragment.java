@@ -1,21 +1,19 @@
-package ru.nsu.mukhortov.reminder;
+package ru.nsu.mukhortov.reminder.fragments;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SimpleCursorAdapter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+
+import ru.nsu.mukhortov.reminder.R;
+import ru.nsu.mukhortov.reminder.database.DatabaseHelper;
+import ru.nsu.mukhortov.reminder.database.Task;
 
 /**
  * Created by ivan on 09.01.17.
@@ -49,7 +47,7 @@ public class TasksFragment extends Fragment {
 
     int pageNumber;
 
-    static TasksFragment newInstance(int page){
+    public static TasksFragment newInstance(int page){
         TasksFragment tasksFragment = new TasksFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARGUMENT_PAGE_NUMBER, page);

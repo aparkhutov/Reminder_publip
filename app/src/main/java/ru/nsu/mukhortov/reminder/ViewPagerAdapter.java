@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.nsu.mukhortov.reminder.fragments.TasksFragment;
+
 /**
  * Created by ivan on 09.01.17.
  */

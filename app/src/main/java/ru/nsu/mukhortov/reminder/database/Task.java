@@ -1,4 +1,4 @@
-package ru.nsu.mukhortov.reminder;
+package ru.nsu.mukhortov.reminder.database;
 
 public class Task {
     private int id;
