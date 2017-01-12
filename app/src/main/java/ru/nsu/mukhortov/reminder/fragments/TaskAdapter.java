@@ -33,11 +33,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     Toast.makeText(v.getContext(), mTextView.getText(),
                             Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(v.getContext(), TaskActivity.class);
-
-                    ArrayList<String>taskInfo = new ArrayList<String>();
-                    taskInfo.add(task.getName());
-                    taskInfo.add(task.getDescription());
-                    intent.putExtra(TASK_NAME, taskInfo);
+                  //  ArrayList<String>taskInfo = new ArrayList<String>();
+                  //  taskInfo.add(task.getName());
+                  //  taskInfo.add(task.getDescription());
+                    intent.putExtra(TASK_NAME, task);
+                   // intent.putExtra(TASK_NAME, taskInfo);
                     v.getContext().startActivity(intent);
 
                 }

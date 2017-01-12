@@ -19,6 +19,7 @@ import android.widget.EditText;
 import java.util.ArrayList;
 
 import ru.nsu.mukhortov.reminder.database.DatabaseHelper;
+import ru.nsu.mukhortov.reminder.database.Task;
 
 public class TaskActivity extends AppCompatActivity {
     static final String TASK_NAME = "task_name";
@@ -65,10 +66,14 @@ public class TaskActivity extends AppCompatActivity {
                 toolbar.setTitle(taskNameEditText.getText());
 
                 Intent intent = new Intent();
-                ArrayList<String> taskInfo = new ArrayList<>();
-                taskInfo.add(taskNameEditText.getText().toString());
-                taskInfo.add(description);
-                intent.putExtra("task", taskInfo);
+
+
+                //ArrayList<String> taskInfo = new ArrayList<>();
+                Task task = new Task(taskNameEditText.getText().toString(), description, "null", "null", "null", "null");
+              //  taskInfo.add(taskNameEditText.getText().toString());
+              //  taskInfo.add(description);
+               // intent.putExtra("task", taskInfo);
+                intent.putExtra("task", task);
                 setResult(RESULT_OK, intent);
                 finish();
                 return true;
@@ -106,9 +111,10 @@ public class TaskActivity extends AppCompatActivity {
 
         Bundle data = getIntent().getExtras();
 
-        ArrayList<String>taskDetails = data.getStringArrayList(TASK_NAME);
-        taskName = taskDetails.get(0);
-        description = taskDetails.get(1);
+        Task task = data.getParcelable(TASK_NAME);
+       // ArrayList<String>taskDetails = data.getStringArrayList(TASK_NAME);
+        taskName = task.getName();
+        description = task.getDescription();
         toolbar.setTitle(taskName);
         color =  ((ColorDrawable)toolbar.getBackground()).getColor();
 

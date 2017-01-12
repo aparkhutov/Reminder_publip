@@ -46,10 +46,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        ArrayList<String> task = data.getStringArrayListExtra("task");
-
-        databaseHelper.addTask(task.get(0), task.get(1),
+        //ArrayList<String> task = data.getStringArrayListExtra("task");
+        Task task = data.getParcelableExtra("task");
+        databaseHelper.addTask(task.getName(), task.getDescription(),
                 "null", "null", "null", "null");
+
+//        databaseHelper.addTask(task.get(0), task.get(1),
+//                "null", "null", "null", "null");
         databaseHelper = new DatabaseHelper(getApplicationContext());
 
         database = databaseHelper.getWritableDatabase();
@@ -90,9 +93,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), TaskActivity.class);
-                ArrayList<String>task = new ArrayList<String>();
-                task.add("new task");
-                task.add("details");
+                Task task = new Task("new task", "details", "null", "null", "null", "null");
+
+            //    ArrayList<String>task = new ArrayList<String>();
+              //  task.add("new task");
+              //  task.add("details");
                 intent.putExtra(TASK_NAME, task);
                 startActivityForResult(intent, 1);
 

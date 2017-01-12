@@ -1,6 +1,9 @@
 package ru.nsu.mukhortov.reminder.database;
 
-public class Task {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Task implements Parcelable{
     private int id;
     private String name;
     private String description;
@@ -8,6 +11,7 @@ public class Task {
     private String finish_day;
     private String finish_time;
     private String notice_time;
+
 
     public Task(String name, String description, String status, String finish_day, String finish_time, String notice_time){
         //this.id = id;
@@ -46,4 +50,49 @@ public class Task {
     public String getNoticeTime(){
         return notice_time;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeString(status);
+        dest.writeString(finish_day);
+        dest.writeString(finish_time);
+        dest.writeString(notice_time);
+        dest.writeInt(id);
+
+
+
+    }
+
+    public static final Parcelable.Creator<Task> CREATOR = new Parcelable.Creator<Task>() {
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
+        }
+
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
+
+
+    private Task(Parcel in) {
+        name = in.readString();
+        description = in.readString();
+        status = in.readString();
+        finish_day = in.readString();
+        finish_time = in.readString();
+        notice_time = in.readString();
+        id = in.readInt();
+    }
+
+
+
 }
+
+
