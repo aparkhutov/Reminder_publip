@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -64,10 +65,13 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         databaseHelper = new DatabaseHelper(this);
-        /*databaseHelper.addTask("Task 1", "simple test", "active", "2016-12-12", "12:10:00", "12:00:00");
-        databaseHelper.addTask("Task 2", "simple test", "active", "2016-12-12", "12:10:00", "12:00:00");
-        databaseHelper.addTask("Task 3", "simple test", "active", "2016-12-12", "12:10:00", "12:00:00");
-        databaseHelper.addTask("Task 4", "simple test", "active", "2016-12-12", "12:10:00", "12:00:00");*/
+
+        //databaseHelper.dropTable();
+
+        /*databaseHelper.addTask("Task 1", "simple test 1", "active", "2016-12-12", "12:10:00", "12:00:00");
+        databaseHelper.addTask("Task 2", "simple test 2", "active", "2016-12-12", "12:10:00", "12:00:00");
+        databaseHelper.addTask("Task 3", "simple test 3", "active", "2016-12-12", "12:10:00", "12:00:00");
+        databaseHelper.addTask("Task 4", "simple test 4", "active", "2016-12-12", "12:10:00", "12:00:00");*/
 
 
         String string = "2022-02-13";
@@ -110,8 +114,6 @@ public class MainActivity extends AppCompatActivity {
         active.setDatabase(database);
         active.setDatabaseHelper(databaseHelper);
 
-      //  completed.setDatabase(database);
-      //  completed.setDatabaseHelper(databaseHelper);
         adapter.addFragment(active, "Active");
         adapter.addFragment(completed, "Completed");
 
@@ -137,5 +139,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        databaseHelper = new DatabaseHelper(this);
+        database = databaseHelper.getWritableDatabase();
+        active.setDatabase(database);
+        active.setDatabaseHelper(databaseHelper);
+
+        adapter.addFragment(active, "Active");
+        adapter.addFragment(completed, "Completed");
+
+        viewPager.setAdapter(adapter);
+    }
 
 }

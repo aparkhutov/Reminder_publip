@@ -55,7 +55,7 @@ public class TaskActivity extends AppCompatActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow((findViewById(R.id.card_view)).getWindowToken(), 0);
                 //database.addTask("FromTaskActivity", "description", "active", "null", "null", "null");
-                database.addTask("Task 1", "simple test", "active", "2016-12-12", "12:10:00", "12:00:00");
+                //database.addTask("Task 1", "simple test", "active", "2016-12-12", "12:10:00", "12:00:00");
                 toolbar.setBackgroundColor(color);
                 save.setVisible(false);
                 delete.setVisible(true);
@@ -112,7 +112,7 @@ public class TaskActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         taskDescriptionEditText = (EditText)findViewById(R.id.taskdescription);
-        taskDescriptionEditText.setText(taskName + "'s description");
+        taskDescriptionEditText.setText(taskName + " description");
 
         taskDescriptionEditText.setFocusable(false);
         taskNameEditText.setFocusable(false);
