@@ -10,7 +10,7 @@ import java.util.HashMap;
 import ru.nsu.mukhortov.reminder.database.Task;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
-/*database*/
+    /*database*/
     static final String dbName="rapidminerDB";
 
     static final String tasksTable="tasks";
@@ -100,8 +100,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-    public void addTask(String name, String description, String status,
-                        String f_day, String f_time, String n_time){
+    public int addTask(String name, String description, String status,
+                       String f_day, String f_time, String n_time){
 
         // ADDITION TO THE "TASKS" TABLE
 
@@ -184,6 +184,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 f_day + "', '" +
                 f_time + "')");
 
+        return taskID;
     }
 
     public HashMap<Integer, Task> getTasks(){
@@ -233,6 +234,69 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
 
         return tasks;
+    }
+
+    public boolean deleteTaskByID(int id){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String noticeID;
+
+        Cursor cursorT = db.rawQuery("SELECT * FROM " + tasksTable ,new String[]{});
+        Cursor cursorNR = db.rawQuery("SELECT * FROM " + tasksTable ,new String[]{});
+        Cursor cursorN = db.rawQuery("SELECT * FROM " + tasksTable ,new String[]{});
+
+        cursorT.moveToFirst();
+        cursorNR.moveToFirst();
+        cursorN.moveToFirst();
+
+        try {
+            db.execSQL("DELETE FROM " + tasksTable + " WHERE id = " + id);
+
+            cursorNR = db.rawQuery("SELECT * FROM " + nonRecurrentTable + " WHERE task_id = " + id, new String[]{});
+
+            cursorNR.moveToFirst();
+            noticeID = cursorNR.getString(cursorNR.getColumnIndex(colNoticeID));
+
+            db.execSQL("DELETE FROM " + nonRecurrentTable + " WHERE task_id = " + id);
+            db.execSQL("DELETE FROM " + noticesTable + " WHERE id = " + noticeID);
+        }catch (Exception e){
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean updateTaskByID(int id, String newName, String newDescription, String newStatus, String newF_day, String newF_time, String newN_time){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String noticeID;
+
+        Cursor cursorNR = db.rawQuery("SELECT * FROM " + nonRecurrentTable + " WHERE task_id = " + id, new String[]{});
+
+        cursorNR.moveToFirst();
+        noticeID = cursorNR.getString(cursorNR.getColumnIndex(colNoticeID));
+
+        try {
+            db.execSQL("UPDATE " + tasksTable + " SET " +
+                    colName + " = '" + newName + "', " +
+                    colDescription + " = '" + newDescription + "', " +
+                    colStatus + " = '" + newStatus + "' WHERE " +
+                    colID + " = " + id);
+
+            db.execSQL("UPDATE " + nonRecurrentTable + " SET " +
+                    colFDay + " = '" + newF_day + "', " +
+                    colFTime + " = '" + newF_time + "' WHERE " +
+                    colTaskID + " = " + id);
+
+            db.execSQL("UPDATE " + noticesTable + " SET " +
+                    colTime + " = '" + newN_time + "', " +
+                    colNoticeText + " = '" + newName + "' WHERE " +
+                    colID + " = " + noticeID);
+        }catch (Exception e){
+            return false;
+        }
+
+        return true;
     }
 
     public void dropTable(){
