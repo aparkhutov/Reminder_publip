@@ -1,6 +1,5 @@
 package ru.nsu.mukhortov.reminder;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,18 +8,15 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.net.InetAddress;
 import java.util.ArrayList;
 
 public class TaskActivity extends AppCompatActivity {
@@ -30,7 +26,8 @@ public class TaskActivity extends AppCompatActivity {
     String taskName;
     MenuItem save;
     MenuItem delete;
-    EditText tv;
+    EditText taskDescriptionEditText;
+    EditText taskNameEditText;
     DatabaseHelper database;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -53,7 +50,7 @@ public class TaskActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.ok:
-                String description = tv.getText().toString();
+                String description = taskDescriptionEditText.getText().toString();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow((findViewById(R.id.card_view)).getWindowToken(), 0);
                 //database.addTask("FromTaskActivity", "description", "active", "null", "null", "null");
@@ -61,10 +58,11 @@ public class TaskActivity extends AppCompatActivity {
                 toolbar.setBackgroundColor(color);
                 save.setVisible(false);
                 delete.setVisible(true);
-                toolbar.setTitle(taskName);
+                toolbar.setTitle(taskNameEditText.getText());
+
                 Intent intent = new Intent();
                 ArrayList<String> taskInfo = new ArrayList<>();
-                taskInfo.add(taskName);
+                taskInfo.add(taskNameEditText.getText().toString());
                 taskInfo.add(description);
                 intent.putExtra("task", taskInfo);
                 setResult(RESULT_OK, intent);
@@ -92,6 +90,7 @@ public class TaskActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -105,13 +104,17 @@ public class TaskActivity extends AppCompatActivity {
         taskName = data.getString(TASK_NAME);
         toolbar.setTitle(taskName);
         color =  ((ColorDrawable)toolbar.getBackground()).getColor();
-        TextView nameTextView = (TextView)findViewById(R.id.taskname);
-        nameTextView.setText(taskName);
+
+        taskNameEditText = (EditText)findViewById(R.id.taskname);
+        taskNameEditText.setText(taskName);
+
         setSupportActionBar(toolbar);
 
-        tv = (EditText)findViewById(R.id.taskdescription);
-        tv.setText(taskName + "'s description");
-        tv.setFocusable(false);
+        taskDescriptionEditText = (EditText)findViewById(R.id.taskdescription);
+        taskDescriptionEditText.setText(taskName + "'s description");
+
+        taskDescriptionEditText.setFocusable(false);
+        taskNameEditText.setFocusable(false);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -121,9 +124,12 @@ public class TaskActivity extends AppCompatActivity {
                 toolbar.setBackgroundColor(Color.GRAY);
                 save.setVisible(true);
                 delete.setVisible(false);
-                tv.setFocusable(true);
-                tv.setFocusableInTouchMode(true);
 
+                taskDescriptionEditText.setFocusable(true);
+                taskDescriptionEditText.setFocusableInTouchMode(true);
+
+                taskNameEditText.setFocusable(true);
+                taskNameEditText.setFocusableInTouchMode(true);
 
             }
         });

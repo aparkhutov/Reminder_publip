@@ -67,6 +67,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         Task task = tasks.get(position);
         holder.mTextView.setText(task.getName());
 
+
     }
 
     @Override
