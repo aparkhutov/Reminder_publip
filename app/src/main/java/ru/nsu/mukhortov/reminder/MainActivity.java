@@ -47,8 +47,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         ArrayList<String> task = data.getStringArrayListExtra("task");
 
-        //databaseHelper.addTask(task.get(0), task.get(1),
-        //        "null", "null", "null", "null");
+        databaseHelper.addTask(task.get(0), task.get(1),
+                "null", "null", "null", "null");
+        databaseHelper = new DatabaseHelper(getApplicationContext());
+
+        database = databaseHelper.getWritableDatabase();
+        active.setDatabase(database);
+        active.setDatabaseHelper(databaseHelper);
 
     }
 
@@ -83,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(view.getContext(), TaskActivity.class);
                 intent.putExtra(TASK_NAME, "new task");
                 startActivityForResult(intent, 1);
+
 
             }
         });
