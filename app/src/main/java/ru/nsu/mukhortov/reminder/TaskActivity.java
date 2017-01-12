@@ -24,7 +24,10 @@ public class TaskActivity extends AppCompatActivity {
     static final String TASK_NAME = "task_name";
     Toolbar toolbar;
     int color;
+
     String taskName;
+    String description;
+
     MenuItem save;
     MenuItem delete;
     EditText taskDescriptionEditText;
@@ -51,7 +54,7 @@ public class TaskActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.ok:
-                String description = taskDescriptionEditText.getText().toString();
+                description = taskDescriptionEditText.getText().toString();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow((findViewById(R.id.card_view)).getWindowToken(), 0);
                 //database.addTask("FromTaskActivity", "description", "active", "null", "null", "null");
@@ -102,7 +105,10 @@ public class TaskActivity extends AppCompatActivity {
         database = new DatabaseHelper(this);
 
         Bundle data = getIntent().getExtras();
-        taskName = data.getString(TASK_NAME);
+
+        ArrayList<String>taskDetails = data.getStringArrayList(TASK_NAME);
+        taskName = taskDetails.get(0);
+        description = taskDetails.get(1);
         toolbar.setTitle(taskName);
         color =  ((ColorDrawable)toolbar.getBackground()).getColor();
 
@@ -112,7 +118,7 @@ public class TaskActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         taskDescriptionEditText = (EditText)findViewById(R.id.taskdescription);
-        taskDescriptionEditText.setText(taskName + " description");
+        taskDescriptionEditText.setText(description);
 
         taskDescriptionEditText.setFocusable(false);
         taskNameEditText.setFocusable(false);

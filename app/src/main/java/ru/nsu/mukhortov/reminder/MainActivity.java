@@ -90,7 +90,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), TaskActivity.class);
-                intent.putExtra(TASK_NAME, "new task");
+                ArrayList<String>task = new ArrayList<String>();
+                task.add("new task");
+                task.add("details");
+                intent.putExtra(TASK_NAME, task);
                 startActivityForResult(intent, 1);
 
 
