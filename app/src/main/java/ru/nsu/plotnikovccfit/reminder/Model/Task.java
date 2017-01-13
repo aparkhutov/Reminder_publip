@@ -13,6 +13,10 @@ public class Task implements Serializable {
     private Date deadline;
     private Notification notification;
 
+    public Task() {
+
+    }
+
     public Task(String title, String description, TaskStatus status, Date deadline, Notification notification) {
         this.title = title;
         this.description = description;

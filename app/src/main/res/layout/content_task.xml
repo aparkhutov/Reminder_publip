@@ -41,6 +41,13 @@
                android:layout_height="wrap_content"
                android:layout_below="@id/description"
                android:background="@null" />
+
+           <Spinner
+               android:id="@+id/statusSpinner"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/date">
+           </Spinner>
        </RelativeLayout>
 
     </android.support.v7.widget.CardView>

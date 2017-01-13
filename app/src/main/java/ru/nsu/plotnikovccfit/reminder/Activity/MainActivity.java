@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), TaskActivity.class);
-                Task task = new Task(null, null, null, null);
+                Task task = null;
                 intent.putExtra(Task.TASK_TAG, task);
                 startActivityForResult(intent, 1);
             }
@@ -75,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+//        Intent intent = getIntent();
+////        Task task = (Task) intent.getExtras().get(Task.TASK_TAG);
+//        active.tasks.add(task);
+
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(active, "Active");
         adapter.addFragment(completed, "Completed");

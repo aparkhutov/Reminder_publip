@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -25,7 +27,7 @@ public class TasksFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    static HashMap<Integer, Task> tasks;
+    public ArrayList<Task> tasks;
     static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
 
     public static TasksFragment newInstance(int page) {
@@ -39,14 +41,16 @@ public class TasksFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        tasks = new HashMap<>();
-
-        for (int i = 0; i < 10; i++) {
-            Notification notification = new Notification("Simple", new Date(), NotificationType.PUSH_NOTIFICATION, NotificationFrequency.NONE);
-            Task task = new Task("Title", "Description", TaskStatus.ACTIVE, new Date(), notification);
-            tasks.put(i, task);
-        }
+        Notification notification = new Notification("Simple", new Date(), NotificationType.PUSH_NOTIFICATION, NotificationFrequency.NONE);
+        tasks = new ArrayList<>();
+        tasks.add(new Task("Диплом", "Написать первую главу", TaskStatus.COMPLETED, new Date(), notification));
+        tasks.add(new Task("Диалог создания нотификации", "Режимы создания/просмотра/редактирования", TaskStatus.COMPLETED, new Date(), notification));
+        tasks.add(new Task("Молоко", "Сходить в магазин за молоком", TaskStatus.ACTIVE, new Date(), notification));
+        tasks.add(new Task("Диплом", "Написать вторую главу", TaskStatus.COMPLETED, new Date(), notification));
+        tasks.add(new Task("Диплом", "Практика", TaskStatus.ACTIVE, new Date(), notification));
+        tasks.add(new Task("Test 1", "Description", TaskStatus.COMPLETED, new Date(), notification));
+        tasks.add(new Task("Test 2", "Description", TaskStatus.COMPLETED, new Date(), notification));
+        tasks.add(new Task("Test 3", "Description", TaskStatus.COMPLETED, new Date(), notification));
     }
 
     @Override

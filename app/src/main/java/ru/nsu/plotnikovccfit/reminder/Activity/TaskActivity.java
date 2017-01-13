@@ -11,8 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -22,6 +25,7 @@ import ru.nsu.plotnikovccfit.reminder.DialogFragment.NotificationDialogFragment;
 import ru.nsu.plotnikovccfit.reminder.Model.Notification;
 import ru.nsu.plotnikovccfit.reminder.Model.NotificationFrequency;
 import ru.nsu.plotnikovccfit.reminder.Model.NotificationType;
+import ru.nsu.plotnikovccfit.reminder.Model.TaskStatus;
 import ru.nsu.plotnikovccfit.reminder.R;
 import ru.nsu.plotnikovccfit.reminder.Model.Task;
 
@@ -30,6 +34,8 @@ public class TaskActivity extends AppCompatActivity implements INotificationDial
 
     private Task task;
     private FragmentManager fragmentManager;
+    private TaskActivityMode mode;
+    private ArrayList<TaskStatus> statusArrayList;
 
     MenuItem save;
     MenuItem delete;
@@ -44,6 +50,9 @@ public class TaskActivity extends AppCompatActivity implements INotificationDial
     EditText descriptionEditText;
     @BindView(R.id.date)
     EditText dateEditText;
+    @BindView(R.id.statusSpinner)
+    Spinner statusSpinner;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -53,13 +62,12 @@ public class TaskActivity extends AppCompatActivity implements INotificationDial
         addNotification = menu.findItem(R.id.notification);
         delete = menu.findItem(R.id.delete);
 
-        setDefaultToolbar();
+        configureToolbar();
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        save.setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -67,13 +75,15 @@ public class TaskActivity extends AppCompatActivity implements INotificationDial
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit:
-                setEditToolbar();
+                mode = TaskActivityMode.EDIT;
+                configureToolbar();
                 return true;
             case R.id.undo:
                 onBackPressed();
                 return true;
             case R.id.save:
-                setDefaultToolbar();
+                mode = TaskActivityMode.PRESENT;
+                configureToolbar();
                 saveResult();
                 return true;
             case R.id.delete:
@@ -96,41 +106,66 @@ public class TaskActivity extends AppCompatActivity implements INotificationDial
         Bundle bundle = getIntent().getExtras();
         task = (Task) bundle.get(Task.TASK_TAG);
 
-        titleEditText.setText(task.getTitle());
-        descriptionEditText.setText(task.getDescription());
-        dateEditText.setText(task.getNotification().getDate().toString());
+        statusArrayList = new ArrayList<>();
+        statusArrayList.add(TaskStatus.ACTIVE);
+        statusArrayList.add(TaskStatus.COMPLETED);
+
+        ArrayAdapter<TaskStatus> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statusArrayList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        statusSpinner.setAdapter(adapter);
+
+        if (task == null) {
+            mode = TaskActivityMode.CREATE;
+            task = new Task();
+            task.setStatus(TaskStatus.ACTIVE);
+        } else {
+            mode = TaskActivityMode.PRESENT;
+
+            titleEditText.setText(task.getTitle());
+            descriptionEditText.setText(task.getDescription());
+            dateEditText.setText(task.getNotification().getDate().toString());
+        }
     }
 
     private void saveResult() {
+
+        if (!isSavingAllowed()) {
+            return;
+        }
         Intent intent = new Intent();
-        task.setTitle(titleEditText.getText().toString());
-        task.setDescription(descriptionEditText.getText().toString());
+
+        String title = titleEditText.getText().toString();
+        String description = descriptionEditText.getText().toString();
+        TaskStatus status = statusArrayList.get(statusSpinner.getSelectedItemPosition());
+
+        task.setTitle(title);
+        task.setDescription(description);
+        task.setStatus(status);
 
         //TODO Засетить оставшиеся филды
 
-        intent.putExtra("task", task);
+        intent.putExtra(Task.TASK_TAG, task);
         setResult(RESULT_OK, intent);
 
         finish();
     }
 
-    private void setDefaultToolbar() {
-        int color = ((ColorDrawable) toolbar.getBackground()).getColor();
-        toolbar.setTitle("Presenting Mode");
-        toolbar.setBackgroundColor(color);
-
-        save.setVisible(false);
-        addNotification.setVisible(false);
-        edit.setVisible(true);
-        delete.setVisible(true);
-
-        titleEditText.setEnabled(false);
-        descriptionEditText.setEnabled(false);
-        dateEditText.setEnabled(false);
+    private void configureToolbar() {
+        switch (mode) {
+            case CREATE:
+                setEditToolbar();
+                break;
+            case PRESENT:
+                setPresentToolbar();
+                break;
+            case EDIT:
+                setEditToolbar();
+                break;
+        }
     }
 
     private void setEditToolbar() {
-        toolbar.setTitle("Editing Mode");
+        toolbar.setTitle(mode.toString());
         toolbar.setBackgroundColor(Color.GRAY);
 
         save.setVisible(true);
@@ -141,6 +176,21 @@ public class TaskActivity extends AppCompatActivity implements INotificationDial
         titleEditText.setEnabled(true);
         descriptionEditText.setEnabled(true);
         dateEditText.setEnabled(true);
+        statusSpinner.setEnabled(true);
+    }
+
+    private void setPresentToolbar() {
+        toolbar.setTitle(mode.toString());
+
+        save.setVisible(false);
+        edit.setVisible(true);
+        addNotification.setVisible(false);
+        delete.setVisible(true);
+
+        titleEditText.setEnabled(false);
+        descriptionEditText.setEnabled(false);
+        dateEditText.setEnabled(false);
+        statusSpinner.setEnabled(false);
     }
 
 
@@ -182,5 +232,15 @@ public class TaskActivity extends AppCompatActivity implements INotificationDial
 
     public void delete() {
         task.setNotification(null);
+    }
+
+    private boolean isSavingAllowed() {
+        return (titleEditText.getText().toString().isEmpty() || descriptionEditText.getText().toString().isEmpty());
+    }
+
+    enum TaskActivityMode {
+        PRESENT,
+        EDIT,
+        CREATE;
     }
 }
