@@ -58,21 +58,13 @@ public class TaskActivity extends AppCompatActivity {
                 description = taskDescriptionEditText.getText().toString();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow((findViewById(R.id.card_view)).getWindowToken(), 0);
-                //database.addTask("FromTaskActivity", "description", "active", "null", "null", "null");
-                //database.addTask("Task 1", "simple test", "active", "2016-12-12", "12:10:00", "12:00:00");
                 toolbar.setBackgroundColor(color);
                 save.setVisible(false);
                 delete.setVisible(true);
                 toolbar.setTitle(taskNameEditText.getText());
 
                 Intent intent = new Intent();
-
-
-                //ArrayList<String> taskInfo = new ArrayList<>();
-                Task task = new Task(taskNameEditText.getText().toString(), description, "null", "null", "null", "null");
-              //  taskInfo.add(taskNameEditText.getText().toString());
-              //  taskInfo.add(description);
-               // intent.putExtra("task", taskInfo);
+               Task task = new Task(taskNameEditText.getText().toString(), description, "null", "null", "null", "null");
                 intent.putExtra("task", task);
                 setResult(RESULT_OK, intent);
                 finish();

@@ -46,13 +46,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //ArrayList<String> task = data.getStringArrayListExtra("task");
         Task task = data.getParcelableExtra("task");
         databaseHelper.addTask(task.getName(), task.getDescription(),
                 "null", "null", "null", "null");
 
-//        databaseHelper.addTask(task.get(0), task.get(1),
-//                "null", "null", "null", "null");
         databaseHelper = new DatabaseHelper(getApplicationContext());
 
         database = databaseHelper.getWritableDatabase();
@@ -68,14 +65,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         databaseHelper = new DatabaseHelper(this);
-
-        //databaseHelper.dropTable();
-
-        /*databaseHelper.addTask("Task 1", "simple test 1", "active", "2016-12-12", "12:10:00", "12:00:00");
-        databaseHelper.addTask("Task 2", "simple test 2", "active", "2016-12-12", "12:10:00", "12:00:00");
-        databaseHelper.addTask("Task 3", "simple test 3", "active", "2016-12-12", "12:10:00", "12:00:00");
-        databaseHelper.addTask("Task 4", "simple test 4", "active", "2016-12-12", "12:10:00", "12:00:00");*/
-
 
         String string = "2022-02-13";
         DateFormat format = new SimpleDateFormat("yyyy-m-dd", Locale.ENGLISH);
@@ -95,9 +84,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(view.getContext(), TaskActivity.class);
                 Task task = new Task("new task", "details", "null", "null", "null", "null");
 
-            //    ArrayList<String>task = new ArrayList<String>();
-              //  task.add("new task");
-              //  task.add("details");
                 intent.putExtra(TASK_NAME, task);
                 startActivityForResult(intent, 1);
 
