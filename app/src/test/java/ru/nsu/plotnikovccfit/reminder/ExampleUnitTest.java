@@ -1,4 +1,4 @@
-package ru.nsu.mukhortov.reminder;
+package ru.nsu.plotnikovccfit.reminder;
 
 import org.junit.Test;
 

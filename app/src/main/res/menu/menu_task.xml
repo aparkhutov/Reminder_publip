@@ -3,16 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/undo"
-        android:icon="@android:drawable/ic_delete"
+        android:icon="@android:drawable/ic_menu_revert"
         android:title=""
         app:showAsAction="always">
     </item>
+
     <item
-        android:id="@+id/ok"
+        android:id="@+id/save"
         android:icon="@android:drawable/ic_menu_save"
         android:title=""
         app:showAsAction="always">
     </item>
+
+    <item
+        android:id="@+id/edit"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title=""
+        app:showAsAction="always">
+    </item>
+
+    <item android:id="@+id/notification"
+        android:title=""
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_today"/>
+
     <item android:id="@+id/delete"
         android:title=""
         app:showAsAction="always"

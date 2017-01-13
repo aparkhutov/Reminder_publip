@@ -1,4 +1,4 @@
-package ru.nsu.mukhortov.reminder;
+package ru.nsu.plotnikovccfit.reminder;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("ru.nsu.mukhortov.reminder", appContext.getPackageName());
+        assertEquals("ru.nsu.plotnikovccfit.reminder", appContext.getPackageName());
     }
 }
