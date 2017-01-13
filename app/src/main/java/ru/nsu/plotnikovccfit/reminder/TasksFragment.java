@@ -48,9 +48,9 @@ public class TasksFragment extends Fragment {
         tasks.add(new Task("Молоко", "Сходить в магазин за молоком", TaskStatus.ACTIVE, new Date(), notification));
         tasks.add(new Task("Диплом", "Написать вторую главу", TaskStatus.COMPLETED, new Date(), notification));
         tasks.add(new Task("Диплом", "Практика", TaskStatus.ACTIVE, new Date(), notification));
-        tasks.add(new Task("Test 1", "Description", TaskStatus.COMPLETED, new Date(), notification));
-        tasks.add(new Task("Test 2", "Description", TaskStatus.COMPLETED, new Date(), notification));
-        tasks.add(new Task("Test 3", "Description", TaskStatus.COMPLETED, new Date(), notification));
+        tasks.add(new Task("Уведомление", "Диалог создания и редактирования уведомления", TaskStatus.COMPLETED, new Date(), notification));
+        tasks.add(new Task("Техн. предпринимательство", "Поставить оценку", TaskStatus.COMPLETED, new Date(), notification));
+        tasks.add(new Task("Test", "Description", TaskStatus.COMPLETED, new Date(), notification));
     }
 
     @Override
