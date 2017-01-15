@@ -5,19 +5,5 @@ package ru.nsu.plotnikovccfit.reminder.Model;
  */
 
 public enum TaskStatus {
-
-    ACTIVE("В процессе"),
-    COMPLETED("Завершено");
-
-    private String name;
-
-    TaskStatus(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
+    ACTIVE, COMPLETED
 }

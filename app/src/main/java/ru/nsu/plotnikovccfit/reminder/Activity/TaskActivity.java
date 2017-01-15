@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +13,12 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,7 +36,7 @@ public class TaskActivity extends AppCompatActivity implements INotificationDial
 
     private Task task;
     private FragmentManager fragmentManager;
-    private TaskActivityMode mode;
+    private TaskActivityMode mode = TaskActivityMode.CREATE;
     private ArrayList<TaskStatus> statusArrayList;
 
     MenuItem save;
@@ -82,8 +84,6 @@ public class TaskActivity extends AppCompatActivity implements INotificationDial
                 onBackPressed();
                 return true;
             case R.id.save:
-                mode = TaskActivityMode.PRESENT;
-                configureToolbar();
                 saveResult();
                 return true;
             case R.id.delete:
@@ -104,11 +104,11 @@ public class TaskActivity extends AppCompatActivity implements INotificationDial
         ButterKnife.bind(this);
 
         Bundle bundle = getIntent().getExtras();
-        task = (Task) bundle.get(Task.TASK_TAG);
-
+        if (bundle != null) {
+            task = (Task) bundle.get(Task.TASK_TAG);
+        }
         statusArrayList = new ArrayList<>();
-        statusArrayList.add(TaskStatus.ACTIVE);
-        statusArrayList.add(TaskStatus.COMPLETED);
+        Collections.addAll(statusArrayList, TaskStatus.values());
 
         ArrayAdapter<TaskStatus> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statusArrayList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -123,7 +123,7 @@ public class TaskActivity extends AppCompatActivity implements INotificationDial
 
             titleEditText.setText(task.getTitle());
             descriptionEditText.setText(task.getDescription());
-            dateEditText.setText(task.getNotification().getDate().toString());
+//            dateEditText.setText(task.getNotification().getDate().toString());
         }
     }
 
@@ -142,11 +142,21 @@ public class TaskActivity extends AppCompatActivity implements INotificationDial
         task.setDescription(description);
         task.setStatus(status);
 
-        //TODO Засетить оставшиеся филды
+        // TODO Засетить оставшиеся филды
+        // ты туду написал, ты его и делай
 
+        switch (mode) {
+            case CREATE:
+                task.save();
+                break;
+            case EDIT:
+                task.update();
+                break;
+            default:
+                // none
+        }
         intent.putExtra(Task.TASK_TAG, task);
         setResult(RESULT_OK, intent);
-
         finish();
     }
 
@@ -239,8 +249,6 @@ public class TaskActivity extends AppCompatActivity implements INotificationDial
     }
 
     enum TaskActivityMode {
-        PRESENT,
-        EDIT,
-        CREATE;
+        PRESENT, EDIT, CREATE
     }
 }

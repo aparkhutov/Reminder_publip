@@ -8,62 +8,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
 
 import ru.nsu.plotnikovccfit.reminder.Activity.TaskActivity;
 import ru.nsu.plotnikovccfit.reminder.Model.Task;
 import ru.nsu.plotnikovccfit.reminder.Model.TaskStatus;
 
-
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
+    private List<Task> tasks;
 
-    private static ArrayList<Task> tasks;
-    private static Task task;
-
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTextView;
-        TextView descriptionTextView;
-        TextView dateTextView;
-        CardView cardView;
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+        private TextView titleTextView;
+        private TextView descriptionTextView;
+        private TextView dateTextView;
+        private CardView cardView;
 
         ViewHolder(final View view) {
             super(view);
-
-            cardView = (CardView) view.findViewById(R.id.card_view);
+            cardView =  (CardView) view.findViewById(R.id.card_view);
             titleTextView = (TextView) cardView.findViewById(R.id.title);
             descriptionTextView = (TextView) cardView.findViewById(R.id.description);
             dateTextView = (TextView) cardView.findViewById(R.id.date);
+        }
 
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), TaskActivity.class);
-                    task = tasks.get(getPosition());
-                    intent.putExtra(Task.TASK_TAG, task);
-                    v.getContext().startActivity(intent);
-                }
-            });
-
-            view.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    return false;
-                }
-            });
-
+        public void setOnClickListener(View.OnClickListener listener) {
+            cardView.setOnClickListener(listener);
         }
     }
 
-    TaskAdapter(ArrayList<Task> tasks) {
+    TaskAdapter(List<Task> tasks) {
         this.tasks = tasks;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_item, parent, false);
 
@@ -72,11 +53,21 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        task = tasks.get(position);
+        Task holderTask = tasks.get(position);
+        final int pos = position;
+        holder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "OnClickClackBANGBANGBANG", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(v.getContext(), TaskActivity.class);
+                intent.putExtra(Task.TASK_TAG, tasks.get(pos));
+                v.getContext().startActivity(intent);
+            }
+        });
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
-        if (task.getStatus() == TaskStatus.ACTIVE) {
+        if (holderTask.getStatus() == TaskStatus.ACTIVE) {
             holder.titleTextView.setTextColor(Color.RED);
             holder.cardView.setBackgroundColor(Color.LTGRAY);
         } else {
@@ -84,9 +75,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.cardView.setBackgroundColor(Color.WHITE);
         }
 
-        holder.titleTextView.setText(task.getTitle());
-        holder.descriptionTextView.setText(task.getDescription());
-        holder.dateTextView.setText(simpleDateFormat.format(task.getNotification().getDate()));
+        holder.titleTextView.setText(holderTask.getTitle());
+        holder.descriptionTextView.setText(holderTask.getDescription());
+//        holder.dateTextView.setText(simpleDateFormat.format(holderTask.getNotification().getDate()));
     }
 
     @Override

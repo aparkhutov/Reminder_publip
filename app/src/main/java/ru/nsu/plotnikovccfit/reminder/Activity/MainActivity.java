@@ -11,7 +11,6 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.nsu.plotnikovccfit.reminder.R;
-import ru.nsu.plotnikovccfit.reminder.Model.Task;
 import ru.nsu.plotnikovccfit.reminder.TasksFragment;
 import ru.nsu.plotnikovccfit.reminder.ViewPagerAdapter;
 
@@ -34,25 +33,44 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), TaskActivity.class);
-                Task task = null;
-                intent.putExtra(Task.TASK_TAG, task);
-                startActivityForResult(intent, 1);
-            }
-        });
+        adapter = initAdapter();
+        viewPager.setAdapter(adapter);
 
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        fab.setOnClickListener(getFabOnClickListener());
+        viewPager.addOnPageChangeListener(getPageChangeListener());
+
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // dirty hack
+        adapter = initAdapter();
+        viewPager.setAdapter(adapter);
+    }
+
+    private ViewPagerAdapter initAdapter() {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         active = new TasksFragment();
         completed = new TasksFragment();
-
         adapter.addFragment(active, "Active");
         adapter.addFragment(completed, "Completed");
+        return adapter;
+    }
 
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    private View.OnClickListener getFabOnClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TaskActivity.class);
+                startActivity(intent);
+            }
+        };
+    }
+
+    private ViewPager.OnPageChangeListener getPageChangeListener() {
+        return new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -67,21 +85,6 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
 
             }
-        });
-        tabLayout = (TabLayout) findViewById(R.id.tablayout);
-        tabLayout.setupWithViewPager(viewPager);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        Intent intent = getIntent();
-////        Task task = (Task) intent.getExtras().get(Task.TASK_TAG);
-//        active.tasks.add(task);
-
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(active, "Active");
-        adapter.addFragment(completed, "Completed");
-        viewPager.setAdapter(adapter);
+        };
     }
 }

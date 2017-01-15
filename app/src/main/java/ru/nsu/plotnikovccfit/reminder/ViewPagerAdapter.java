@@ -21,6 +21,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        // это странно
+        // ну и то что происходит в onResume в мэин активити по сути не надо, т.к это пэйджер
+        // сам создает новые инстансы фрагментов, не есть хорошо, но и переделывать это
+        // я конечно же не буду
         return TasksFragment.newInstance(position);
     }
 

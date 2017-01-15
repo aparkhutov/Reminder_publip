@@ -17,6 +17,8 @@ import junit.framework.Assert;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
@@ -106,9 +108,7 @@ public class NotificationDialogFragment extends DialogFragment {
         timeTextView.setText(simpleTimeFormat.format(date));
 
         frequencies = new ArrayList<>();
-        frequencies.add(NotificationFrequency.NONE);
-        frequencies.add(NotificationFrequency.EVERYDAY);
-        frequencies.add(NotificationFrequency.EVERY_FIVE_DAYS);
+        Collections.addAll(frequencies, NotificationFrequency.values());
 
         ArrayAdapter<NotificationFrequency> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, frequencies);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -125,10 +125,10 @@ public class NotificationDialogFragment extends DialogFragment {
     @OnClick({ R.id.okButton, R.id.cancelButton, R.id.deleteButton })
     public void close(Button button) {
         INotificationDialogPresent activity = (INotificationDialogPresent) getActivity();
-        if (button == okButton) {
+        if (button .getId() == R.id.okButton) {
             activity.confirm(getNewNotification());
         }
-        if (button == deleteButton) {
+        if (button.getId() == R.id.deleteButton) {
             activity.delete();
         }
         dismiss();
@@ -139,14 +139,13 @@ public class NotificationDialogFragment extends DialogFragment {
         DialogFragment picker;
         String TAG;
 
-        if (button == dateButton) {
+        if (button.getId() == R.id.dateButton) {
             picker = DatePickerFragment.newInstance(date);
             TAG = "datePicker";
         } else {
             picker = TimePickerFragment.newInstance(date);
             TAG = "timePicker";
         }
-
         picker.show(getChildFragmentManager(), TAG);
     }
 

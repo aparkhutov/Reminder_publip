@@ -1,17 +1,22 @@
 package ru.nsu.plotnikovccfit.reminder.Model;
 
+
+
+
+
+import com.orm.SugarRecord;
+
 import java.io.Serializable;
 import java.util.Date;
 
-public class Task implements Serializable {
-
+public class Task extends SugarRecord implements Serializable {
     public static final String TASK_TAG = "ru.nsu.ccfit.plotnikov.reminder.Task.TASK";
 
-    private String title;
-    private String description;
-    private TaskStatus status;
-    private Date deadline;
-    private Notification notification;
+    String title;
+    String description;
+    TaskStatus status;
+    Date deadline;
+    Notification notification;
 
     public Task() {
 
