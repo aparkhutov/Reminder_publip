@@ -1,9 +1,5 @@
 package ru.nsu.plotnikovccfit.reminder.Model;
 
-
-
-
-
 import com.orm.SugarRecord;
 
 import java.io.Serializable;
@@ -11,6 +7,7 @@ import java.util.Date;
 
 public class Task extends SugarRecord implements Serializable {
     public static final String TASK_TAG = "ru.nsu.ccfit.plotnikov.reminder.Task.TASK";
+    //public static final String TASK_TAG = "ru.nsu.ccfit.bakarov.reminder.Task.TASK";
 
     String title;
     String description;
